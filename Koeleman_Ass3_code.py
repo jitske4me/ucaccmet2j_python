@@ -19,8 +19,13 @@ with open('precipitation.json') as file:
 ## to do: open stations, find seattle and corresponding code 
 
 
+import json
+
+with open('precipitation.json') as file:
+    info = json.load(file)
+    
 Seattle_station = []
-month_prec = []
+monthly_prec = 12*[0]  
 
 for entry in range(len(info)):
     temp = info[entry]['station']
@@ -28,19 +33,17 @@ for entry in range(len(info)):
     #select all entries for Seattle and make that a list and make a list with month-precipitation
     if temp == 'GHCND:US1WAKG0038':
         Seattle_station += [info[entry]]
-   
-
-  
-monthly_prec = 12*[0]    
-for entry in range(len(Seattle_station)):
-    month = int(Seattle_station[entry]['date'][5:7] )
-    monthly_prec[month-1]+= Seattle_station[entry]['value']
-    
+        month = int(info[entry]['date'][5:7] )
+        monthly_prec[month-1]+= info[entry]['value']
 
 print(monthly_prec)
-        
-    
-    
+
+#Write to a json file        
+with open('monthly_prec.json', 'w') as file:
+    json.dump(monthly_prec, file) #, indent=4)  
+
+
+
 #year-month-day
 
 
